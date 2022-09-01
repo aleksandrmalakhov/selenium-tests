@@ -2,9 +2,8 @@ package com.malakhov.elements.product_section;
 
 import com.malakhov.AbstractElement;
 import com.malakhov.elements.product.AbstractProduct;
-import com.malakhov.elements.product.NewProduct;
-import com.malakhov.elements.product.Product;
 import com.malakhov.elements.product.DiscountProduct;
+import com.malakhov.elements.product.NewProduct;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,7 +12,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class ProductSection<T extends Product> extends AbstractElement {
+public abstract class ProductSection<T extends AbstractProduct> extends AbstractElement {
     private final By section;
     private final By title;
     private final By slickPrev;
@@ -62,7 +61,7 @@ public abstract class ProductSection<T extends Product> extends AbstractElement 
                     } else if (clazz.getSimpleName().equals(NewProduct.class.getSimpleName())) {
                         return new NewProduct(element);
                     }
-                    throw new IllegalArgumentException("");
+                    throw new IllegalArgumentException("Class '" + clazz.getSimpleName() + "' not not found");
                 })
                 .collect(Collectors.toList());
     }
@@ -77,7 +76,7 @@ public abstract class ProductSection<T extends Product> extends AbstractElement 
             subList = this.getActiveProduct(clazz);
             var firstProduct = subList.get(0);
 
-            if (firstProduct.getTitle().equals(subProduct.getTitle())) {
+            if (firstProduct.equals(subProduct)) {
                 subProduct = null;
             } else {
                 listProduct.add(firstProduct);

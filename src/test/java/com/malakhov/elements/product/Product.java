@@ -6,17 +6,30 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 @Getter
-public abstract class Product implements AbstractProduct {
+public abstract class Product<T> implements AbstractProduct, Comparable<T> {
     private final WebElement element;
     private final String title;
     private final String shortDesc;
-    private final String price;
+    private final String oldPrice;
+    private final String newPrice;
 
     public Product(@NonNull WebElement element) {
         this.element = element;
         title = element.findElement(By.tagName("h3")).getText();
         shortDesc = element.findElement(By.tagName("p")).getText();
-        price = element.findElement(By.cssSelector(".amount")).getText();
+        var price = element.findElement(By.cssSelector(".price")).getText();
+        if (!price.isBlank()) {
+            if (price.contains(" ")) {
+                oldPrice = price.split(" ")[0];
+                newPrice = price.split(" ")[1];
+            } else {
+                oldPrice = price;
+                newPrice = "";
+            }
+        } else {
+            oldPrice = "";
+            newPrice = "";
+        }
     }
 
     protected boolean isSale(@NonNull WebElement element) {
@@ -44,7 +57,8 @@ public abstract class Product implements AbstractProduct {
         return "Product{" +
                 "title='" + title + '\'' +
                 ", shortDesc='" + shortDesc + '\'' +
-                ", price='" + price + '\'' +
+                ", oldPrice='" + oldPrice + '\'' +
+                ", newPrice='" + newPrice + '\'' +
                 '}';
     }
 }

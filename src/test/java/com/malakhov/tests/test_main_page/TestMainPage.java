@@ -2,22 +2,19 @@ package com.malakhov.tests.test_main_page;
 
 import com.malakhov.pages.MainPage;
 import com.malakhov.tests.BaseTest;
+import io.qameta.allure.Description;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@DisplayName("Тест главной станицы сайта")
 public class TestMainPage extends BaseTest {
     private final MainPage page = new MainPage();
 
     @Test
-    void testTitle() {
-        var textSales = page.getDiscountProduct().getTitle();
-        var textNext = page.getNewProduct().getTitle();
-        System.out.println(textSales);
-        System.out.println(textNext);
-    }
-
-    @Test
+    @DisplayName("Тест группы товаров 'Новые поступления'")
+    @Description("Получение товаров из группы 'Новые поступления' и проверка присутствия соответствующего лейбла")
     void Get_New_Product() {
         var newProductSection = page.getNewProduct();
         var notNew = newProductSection.getAllActiveProduct()
@@ -29,6 +26,8 @@ public class TestMainPage extends BaseTest {
     }
 
     @Test
+    @DisplayName("Тест группы товаров 'Распродажа'")
+    @Description("Получение товаров из группы 'Распродажа' и проверка присутствия соответствующего лейбла")
     void Get_Discount_Product() {
         var discountProductSection = page.getDiscountProduct();
         var notDiscount = discountProductSection.getAllActiveProduct()
